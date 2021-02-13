@@ -2,7 +2,7 @@ import csv
 
 
 def split_txt():
-    # txt파일을 읽고 txt파일과 csv 파일로 추출할 예정.
+    # txt 파일을 읽고 txt 파일과 csv 파일로 추출할 예정.
     openFileTxt = open('har.txt', 'r', encoding='UTF-8')
     writeFileTxt = open('split_har.txt', 'w', encoding='UTF-8')
     # txt 파일 읽기 쓰기
@@ -11,8 +11,8 @@ def split_txt():
     wr = csv.writer(writeFileCsv)
 
     lines = openFileTxt.readlines()
+    person = ''
 
-    # writeFileTxt.write('person, text')  # ex [이수연] [오후 10:21] 챠
     for line in lines:
         line.lstrip()
         if line == '\n':
@@ -27,10 +27,16 @@ def split_txt():
 
         line = line.replace("[", "")  # 이수연] 오후 10:21] 챠
         line = line.replace("]", "")  # 이수연 오후 10:21 챠
+        line = line.rstrip('\n')
         split_line = line.split(maxsplit=3)
         print(split_line)
 
-        line = split_line[0] + ',' + split_line[3]  # 이수연,챠
+        if person == line.split()[0]:
+            line = ' ' + split_line[3]
+            # line = line.rstrip('\n')
+        else:
+            line = '\n' + split_line[0] + ',' + split_line[3]  # 이수연,챠
+            person = split_line[0]
         writeFileTxt.write(line)
         wr.writerow([split_line[0], split_line[3]])
         print(line)
