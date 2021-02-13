@@ -1,0 +1,3 @@
+[console_scripts]
+pykos = pykospacing.pykos:main
+
